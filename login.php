@@ -8,7 +8,7 @@ session_start();
   <script src="bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>login</title>
 </head>
 <body>
   <?php include 'links.php'; ?>
@@ -20,20 +20,25 @@ session_start();
       <div class = "card-body">
         <?php
         if(isset($_POST['login'])){
-          $username =$_POST['username'];
+          $username =htmlspecialchars($_POST['username'],ENT_QUOTES);
           $password =$_POST['password'];
-          $user= mysqli_query($dbcon, "SELECT * FROM users WHERE
-           username = '$username' AND password = '$password'");
-         
-          if(mysqli_num_rows($user) > 0){
-            $row= mysqli_fetch_array($user);
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['fullname'] = $row['fullname'];
-            $_SESSION['usertype'] = $row['usertype'];
-            header("Location: index.php");
-          }
-          else{
-            echo '<p class = "text-danger">invalid username or password</p>';
+          $user_query = mysqli_query($dbcon, "SELECT * FROM users WHERE username = '$username'");
+          
+          if(mysqli_num_rows($user_query) > 0){
+            $row = mysqli_fetch_assoc($user_query);
+            // Verify hashed password
+            if(password_verify($password, $row['password'])){
+              $_SESSION['username'] = $row['username'];
+              $_SESSION['fullname'] = $row['fullname'];
+              $_SESSION['usertype'] = $row['usertype'];
+              header("Location: index.php");
+              exit;
+            }
+         else {
+              echo '<p class="text-danger">Invalid username or password</p>';
+            }
+          } else {
+            echo '<p class="text-danger">Invalid username or password</p>';
           }
         }
         ?>
