@@ -1,7 +1,9 @@
 
-<?session_start();
-if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
+<?
+session_start();
+if(!isset($_SESSION['username']) || $_SESSION['usertype'] != 'admin'){
   header("Location: login.php");
+  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -20,10 +22,11 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
     <?php
         if(isset($_POST['save'])){
           $username = htmlspecialchars($_POST['username'],ENT_QUOTES);
-          $fullname = sha1($_POST['fullname']);
+          $fullname = htmlspecialchars($_POST['fullname'],ENT_QUOTES);
           $usertype =htmlspecialchars ($_POST['usertype'],ENT_QUOTES);
           $password =htmlspecialchars ($_POST['password'],ENT_QUOTES);
-          $new_user= mysqli_query($dbcon, "INSERT INTO users (username, fullname, usertype, password) VALUES('$username','$fullname','$usertype','$password')");
+          $sql = "INSERT INTO users (username, fullname, usertype, password) VALUES('$username','$fullname','$usertype','$password')";
+          $new_user= mysqli_query($dbcon, $sql);
           if($new_user){
             echo "<p class = 'text-success'>user saved</p>";
           }
@@ -33,7 +36,7 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
         }
         
       ?>
-      <div class="card-body">">
+      <div class="card-body">
      <form method = "post">
           <div class = "mb-3">
             <label >username</label>
@@ -49,6 +52,7 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
             <option value="admin">Admin</option>
             <option value="user">user</option>
           </select>
+          </div>
 </div>
           <div class = "mb-3">
             <label >password</label>
