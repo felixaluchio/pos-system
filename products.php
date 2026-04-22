@@ -1,6 +1,8 @@
-<?session_start();
+<?php
+session_start();
 if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
   header("Location: login.php");
+  exit;
 }
 ?>
 
@@ -11,33 +13,32 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
   <script src="bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <title>Products</title>
 </head>
 <body>
   <?php include 'links.php'; ?>
+  <div class = "card">
   <div class="container mt-4">
     <div class="card_header">
      New products
       <?php
         if(isset($_POST['save'])){
           $product_code = htmlspecialchars($_POST['product_code'],ENT_QUOTES);
-          $product_name = sha1($_POST['product_name']);
-          $quantity =htmlspecialchars ($_POST['quantity'],ENT_QUOTES);
+          $product_name = htmlspecialchars($_POST['product_name'],ENT_QUOTES);
+          $quantity =htmlspecialchars($_POST['quantity'],ENT_QUOTES);
           $buying_price =htmlspecialchars ($_POST['buying_price'],ENT_QUOTES);
           $selling_price = htmlspecialchars($_POST['selling_price'],ENT_QUOTES);
-          $new_product= mysqli_query($dbcon, "INSERT INTO products (product_code, product_name, quantity, buying_price, selling_price) VALUES('$product_code','$product_name','$quantity','$buying_price','$selling_price')");
+          $sql = "INSERT INTO products (product_code, product_name, quantity, buying_price, selling_price) VALUES('$product_code','$product_name','$quantity','$buying_price','$selling_price')";
+          $new_product= mysqli_query($dbcon, $sql);
           if($new_product){
-            echo "product saved";
+             echo "<p class='text-success'>Product saved successfully</p>";
           }
           else{
-            echo "Error, product not saved";
+            echo "<p class='text-danger'>Error: product not saved - " . mysqli_error($dbcon) . "</p>";
           }
         }
         
       ?>
-
-
-
       </div>
       <div class="card-body">
         <form method = "post">
@@ -56,7 +57,7 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
           </div>
            <div class = "mb-3">
             <label for = "description" class = "form-label">buying price</label>
-            <input type = "number" name = " buying_price" class = "form-control" >
+            <input type = "number" name = "buying_price" class = "form-control" >
           </div>
            <div class = "mb-3">
             <label for = "description" class = "form-label">selling price(KSH)</label>
@@ -64,6 +65,8 @@ if(!isset($_SESSION['username']) && $_SESSION['usertype'] != 'admin'){
           </div>
           <button type = "submit" name = "save" value ="save" class = "btn btn-primary">Submit</button>
         </form>
-      </div>
+</div>
+</div>
+</div>
 </body>
 </html>
