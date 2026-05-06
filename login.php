@@ -41,7 +41,7 @@ session_start();
  <?php
         if(isset($_POST['login'])){
           $username =htmlspecialchars($_POST['username'],ENT_QUOTES);
-          $password =password_hash($_POST['password'],PASSWORD_DEFAULT);
+          $password =$_POST['password'];
           $user_query = mysqli_query($dbcon, "SELECT * FROM users WHERE username = '$username'");
           
           if(mysqli_num_rows($user_query) > 0){
