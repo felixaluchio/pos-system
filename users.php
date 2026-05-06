@@ -24,7 +24,7 @@ if(!isset($_SESSION['username']) || $_SESSION['usertype'] != 'admin'){
           $username = htmlspecialchars($_POST['username'],ENT_QUOTES);
           $fullname = htmlspecialchars($_POST['fullname'],ENT_QUOTES);
           $usertype =htmlspecialchars ($_POST['usertype'],ENT_QUOTES);
-          $password =htmlspecialchars ($_POST['password'],ENT_QUOTES);
+          $password =password_hash ($_POST['password'],PASSWORD_DEFAULT);
           $sql = "INSERT INTO users (username, fullname, usertype, password) VALUES('$username','$fullname','$usertype','$password')";
           $new_user= mysqli_query($dbcon, $sql);
           if($new_user){
