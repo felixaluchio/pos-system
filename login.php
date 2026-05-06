@@ -18,10 +18,30 @@ session_start();
         <h3>Login</h3>
       </div>
       <div class = "card-body">
-        <?php
+       
+   <form  action = "login.php" method = "post">
+      <div class = "mb-3">
+            <label >username</label>
+            <input type = "text" name = "username"  class="form-control">
+          </div>
+           <div class = "mb-3">
+            <label >password</label>
+            <input type = "password" name = "password" class="form-control">
+          </div>
+          <div class = "mb-3 d-grid">
+          <input type ="submit" name ="login"  class ="btn btn-primary" value ="login">
+    
+          </div>
+</form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+ <?php
         if(isset($_POST['login'])){
           $username =htmlspecialchars($_POST['username'],ENT_QUOTES);
-          $password =$_POST['password'];
+          $password =password_hash($_POST['password'],PASSWORD_DEFAULT);
           $user_query = mysqli_query($dbcon, "SELECT * FROM users WHERE username = '$username'");
           
           if(mysqli_num_rows($user_query) > 0){
@@ -43,24 +63,5 @@ session_start();
         }
         ?>
 
-   <form  action = "login.php" method = "post">
-      <div class = "mb-3">
-            <label >username</label>
-            <input type = "text" name = "username"  class="form-control">
-          </div>
-           <div class = "mb-3">
-            <label >password</label>
-            <input type = "password" name = "password" class="form-control">
-          </div>
-          <div class = "mb-3 d-grid">
-          <input type ="submit" name ="login"  class ="btn btn-primary" value ="login">
-    
-          </div>
-</form>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
   
 
