@@ -1,6 +1,7 @@
 
 <?
 session_start();
+include "dbcon.php";
 if(!isset($_SESSION['username']) || $_SESSION['usertype'] != 'admin'){
   header("Location: login.php");
   exit;
