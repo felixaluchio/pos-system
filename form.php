@@ -22,11 +22,11 @@ session_start();
    <form  action = "login.php" method = "post">
       <div class = "mb-3">
             <label >username</label>
-            <input type = "text" name = "username"  class="form-control">
+            <input type = "text" name = "username"  class="form-control" required>
           </div>
            <div class = "mb-3">
             <label >password</label>
-            <input type = "password" name = "password" class="form-control">
+            <input type = "password" name = "password" class="form-control" required>
           </div>
           <div class = "mb-3 d-grid">
           <input type ="submit" name ="login"  class ="btn btn-primary" value ="login">
